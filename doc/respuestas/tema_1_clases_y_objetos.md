@@ -86,11 +86,22 @@ No todos los lenguajes orientados a objetos requieren explícitamente el concept
 ## 6. ¿Dónde se almacenan en memoria los objetos? ¿Es igual en todos los lenguajes? ¿Qué es la **recolección de basura**? 
 
 ### Respuesta
-Los objetos normalmente se almacenan en la **memoria dinámica** (heap), mientras que las variables locales y llamadas a funciones se ubican en la **memoria stack**. Esto permite que los objetos y algunos datos tengan un tiempo de vida más largo y no se destruyan automáticamente al salir de un bloque de código.  
+Los objetos normalmente se almacenan en la **memoria dinámica** (*heap*), mientras que las variables locales y llamadas a funciones se ubican en la **memoria stack** (para lenguajes de alto nivel o la mayoria, usan el *heap*, epro hay otros que permiten ambas). Esto permite que los objetos y algunos datos tengan un tiempo de vida más largo y no se destruyan automáticamente al salir de un bloque de código.
+
+**Ventajas de usar el *heap***
+- Reserva dinámicamente, es decir, el tamaño se decide en ejecución.
+- Lo que está en el heap vive mas allá que el metodo donde se ha creado.
+
+**Desventajas de usar el *heap***
+- Hay que liberarla cuando ya no se necesita, y hay 2 formas:
+    - *Manual*: Dificil de hacer.
+    - *Automatica*: Por ejemplo con un recolector de basura
 
 No todos los lenguajes manejan la memoria de la misma manera. Por ejemplo, en C++ es necesario gestionar manualmente la memoria con `new` y `delete`, mientras que en Java y Python la gestión de memoria es automática y los objetos que ya no se utilizan se liberan mediante un proceso llamado **recolección de basura (garbage collection)**.  
 
 La **recolección de basura** consiste en detectar objetos que ya no tienen referencias activas y liberar automáticamente la memoria que ocupaban, evitando fugas de memoria y simplificando la gestión del programa.
+
+**Lo malo del recolector de basura** es que siempre está en memoria preguntando si hay basura.
 
 ### **Extra**
 ### Memoria en Programación Orientada a Objetos
@@ -170,6 +181,10 @@ La palabra clave `static` indica que el método o atributo pertenece a la **clas
 
 `static` no se usa sólo en `main`; también puede aplicarse a **atributos y métodos comunes a toda la clase**, como contadores o utilidades que no dependen de los objetos.  
 
+No puede usarse desde un método `static` nada que no sea `static`.
+
+Es importante no abusar del uso de `static`.
+
 Cuando se combina `static` con `final`, se obtiene un **valor o método que pertenece a la clase y no puede modificarse**. Por ejemplo, se usan `static final` para **constantes**, de manera que todos los objetos de la clase compartan el mismo valor y este no pueda cambiar durante la ejecución.
 
 
@@ -182,7 +197,7 @@ En Java, los programas se escriben en archivos con extensión `.java`. Para **co
 javac MiPrograma.java
 ```
 
-Este comando genera un archivo con extensión `.class`, que contiene el **byte-code**, un código intermedio que no es directamente ejecutable por el procesador, pero que puede ser interpretado por la **Java Virtual Machine (JVM)**. Para ejecutar el programa, se usa el comando `java` seguido del nombre de la clase principal sin extensión:
+Este comando genera un archivo con extensión `.class` (hasta aqui, a esto se le llama *tiempo de compilación*), que contiene el **byte-code**, un código intermedio que no es directamente ejecutable por el procesador, pero que puede ser interpretado por la **Java Virtual Machine (JVM)**. Para ejecutar el programa, se usa el comando `java` seguido del nombre de la clase principal sin extensión (hasta aqui, a esto se le llama *tiempo de ejecución*):
 
 ```bash
 java MiPrograma
@@ -190,13 +205,15 @@ java MiPrograma
 
 Java es un lenguaje **compilado e interpretado**. Se compila a **byte-code** mediante `javac`, y luego ese byte-code se interpreta o ejecuta por la **JVM**, que actúa como una capa entre el programa y el sistema operativo. Esto permite que un mismo programa Java se ejecute en cualquier sistema que tenga instalada la JVM, sin modificar el código fuente.
 
+Lo malo de todo esto, es que hay un cierto impacto en el rendimiento.
+
 El **byte-code** es un conjunto de instrucciones de bajo nivel que la JVM entiende, mientras que los ficheros `.class` son los que contienen ese byte-code. En otras palabras, el `.class` es el equivalente al archivo objeto en C/C++, pero portable entre sistemas gracias a la máquina virtual.
 
 
 ## 11. En el código anterior de la clase `Punto` ¿Qué es `new`? ¿Qué es un **constructor**? Pon un ejemplo de constructor en una clase `Empleado` que tenga DNI, nombre y apellidos
 
 ### Respuesta
-En Java, la palabra clave `new` se utiliza para **crear una nueva instancia de un objeto**. Cuando se ejecuta `new Punto()`, por ejemplo, se reserva memoria en el heap para ese objeto y se inicializan sus atributos, devolviendo una referencia que se guarda en la variable que lo apunta. En C/C++ esto sería similar a usar `malloc` para reservar memoria, pero en Java `new` también llama automáticamente al constructor de la clase.  
+En Java, la palabra clave `new` se utiliza para **crear una nueva instancia de un objeto**. Cuando se ejecuta `new Punto()`, por ejemplo, se reserva memoria en el heap para ese objeto y se inicializan sus atributos (con el constructor), devolviendo una referencia que se guarda en la variable que lo apunta. En C/C++ esto sería similar a usar `malloc` para reservar memoria, pero en Java `new` también llama automáticamente al constructor de la clase. Ademas, `new` es una expresión, eso quiere decir que se puede asignar a una variable o usarla directamente en una linea de por ejemplo `return`
 
 Un **constructor** es un método especial de una clase que se ejecuta **exactamente cuando se crea un objeto** y sirve para inicializar sus atributos o realizar tareas de configuración inicial. Su nombre debe coincidir exactamente con el nombre de la clase y **no tiene tipo de retorno**, ni siquiera `void`.  
 
@@ -229,13 +246,12 @@ El constructor garantiza que el objeto `e` ya tenga sus atributos inicializados 
 ## 12. ¿Qué es la referencia `this`? ¿Se llama igual en todos los lenguajes? Pon un ejemplo del uso de `this` en la clase `Punto`
 
 ### Respuesta
-## 12. ¿Qué es la referencia `this`? ¿Se llama igual en todos los lenguajes? Pon un ejemplo del uso de `this` en la clase `Punto`
 
-### Respuesta
+En Java, la referencia **`this`** representa (hace referencia) al **objeto actual** desde el que se está ejecutando un método o constructor. Permite distinguir (desambiguar o aclarar) entre los atributos de la clase y los parámetros locales cuando tienen el mismo nombre, y también sirve para pasar la propia instancia como argumento a otros métodos o constructores.  
 
-En Java, la referencia **`this`** representa al **objeto actual** desde el que se está ejecutando un método o constructor. Permite distinguir entre los atributos de la clase y los parámetros locales cuando tienen el mismo nombre, y también sirve para pasar la propia instancia como argumento a otros métodos o constructores.  
+No todos los lenguajes orientados a objetos usan `this` con el mismo nombre. Por ejemplo, en C++ se utiliza también `this`, mientras que en Python se usa `self`, y en JavaScript `this` funciona de manera similar pero su valor puede cambiar según el contexto de llamada. 
 
-No todos los lenguajes orientados a objetos usan `this` con el mismo nombre. Por ejemplo, en C++ se utiliza también `this`, mientras que en Python se usa `self`, y en JavaScript `this` funciona de manera similar pero su valor puede cambiar según el contexto de llamada.  
+`this` no está disponible en metodos `static`.
 
 Un ejemplo sencillo de `this` en la clase `Punto` sería el siguiente:  
 
@@ -300,11 +316,11 @@ public class Main {
 ## 14. El paso del `Punto` como parámetro a un método, es **por copia** o **por referencia**, es decir, si se cambia el valor de algún atributo del punto pasado como parámetro, dichos cambios afectan al objeto fuera del método? ¿Qué ocurre si en vez de un `Punto`, se recibiese un entero (`int`) y dicho entero se modificase dentro de la función? 
 
 ### Respuesta
-En Java, los **objetos**, como un `Punto`, se pasan a los métodos **por valor de la referencia**. Esto significa que se pasa una copia de la referencia al objeto, no el objeto en sí. Por eso, si dentro del método se modifica un atributo del objeto apuntado por esa referencia, los cambios **afectan al objeto original** fuera del método, porque ambos apuntan al mismo objeto en memoria.  
+En Java, los **objetos**, como un `Punto`, se pasan a los métodos **por valor/copia de la referencia**. Esto significa que se pasa una copia de la referencia al objeto, no el objeto en sí. Por eso, si dentro del método se modifica un atributo del objeto apuntado por esa referencia, los cambios **afectan al objeto original** fuera del método, porque ambos apuntan al mismo objeto en memoria. Y ademas, si intentamos asignarle un nuevo objeto, este no cambiará, sino que se creará otro que apunta a otra direccion de memoria.
 
 Por ejemplo, si se recibe un `Punto` y se cambia `p.x = 10` dentro del método, la instancia original que se pasó verá ese cambio reflejado. Sin embargo, si dentro del método se asigna la referencia a un **nuevo objeto**, eso no afecta al objeto original fuera del método, porque solo se está cambiando la copia de la referencia local.  
 
-En cambio, los tipos primitivos como `int`, `double` o `boolean` se pasan **por valor**, es decir, se copia el valor directamente al parámetro del método. Si se modifica ese parámetro dentro del método, **no se altera la variable original** fuera del método, ya que el método solo trabaja con la copia.  
+En cambio, los tipos primitivos como `int`, `double` o `boolean` se pasan **por valor/copia**, es decir, se copia el valor directamente al parámetro del método. Si se modifica ese parámetro dentro del método, **no se altera la variable original** fuera del método, ya que el método solo trabaja con la copia.  
 
 En resumen: los objetos permiten modificar sus atributos dentro del método porque se pasa la referencia por valor, mientras que los tipos primitivos permanecen inalterados, ya que se pasa una copia del valor.
 
