@@ -398,7 +398,43 @@ En Java, un enumerado (`enum`) es en realidad una clase especial. Puede tener at
 Esto aporta grandes ventajas en encapsulación, ya que el comportamiento asociado a cada valor puede definirse dentro del propio enumerado, evitando errores y valores inválidos.
 
 
-## 23. Crea un tipo enumerado en Java que se llame `Mes`, con doce posibles instancias y que además proporcione métodos para obtener cuántos días tiene ese mes, el ordinal de ese mes en el año (1-12), empleando atributos privados y constructores del tipo enumerado. Añade además cuatro métodos para devolver si ese mes tiene algunos días de invierno, primavera, verano u otoño, indicando con un booleano el hemisferio (norte o sur, parámetro `enHemisferioNorte`). Es decir: `esDePrimavera(boolean esHemisferioNorte)`, `esDeVerano(boolean esHemisferioNorte)`, `esDeOtoño(boolean esHemisferioNorte)`, `esDeInvierno(boolean esHemisferioNorte)`
+## 23. Crea un tipo enumerado en Java que se llame `Mes`, con doce posibles instancias y que además proporcione métodos para obtener cuántos días tiene ese mes, el ordinal de ese mes en el año (1-12), empleando atributos privados y constructores del tipo enumerado.
+
+### Respuesta
+```java
+public enum Mes {
+    ENERO(1, 31),
+    FEBRERO(2, 28),
+    MARZO(3, 31),
+    ABRIL(4, 30),
+    MAYO(5, 31),
+    JUNIO(6, 30),
+    JULIO(7, 31),
+    AGOSTO(8, 31),
+    SEPTIEMBRE(9, 30),
+    OCTUBRE(10, 31),
+    NOVIEMBRE(11, 30),
+    DICIEMBRE(12, 31);
+
+    private int ordinal;
+    private int dias;
+
+    private Mes(int ordinal, int dias) {
+        this.ordinal = ordinal;
+        this.dias = dias;
+    }
+
+    public int getDias() {
+        return dias;
+    }
+
+    public int getOrdinal() {
+        return ordinal;
+    }
+}
+```
+
+## 24. Añade a la clase `Mes` del ejercicio anterior cuatro métodos para devolver si ese mes tiene algunos días de invierno, primavera, verano u otoño, indicando con un booleano el hemisferio (norte o sur, parámetro `enHemisferioNorte`). Es decir: `esDePrimavera(boolean esHemisferioNorte)`, `esDeVerano(boolean esHemisferioNorte)`, `esDeOtoño(boolean esHemisferioNorte)`, `esDeInvierno(boolean esHemisferioNorte)`
 
 ### Respuesta
 ```java
@@ -432,6 +468,7 @@ public enum Mes {
         return ordinal;
     }
 
+    // Metodos que pide la pregunta
     public boolean esDePrimavera(boolean hemisferioNorte) {
         return hemisferioNorte ? (ordinal >= 3 && ordinal <= 5)
                                : (ordinal >= 9 && ordinal <= 11);
@@ -452,4 +489,4 @@ public enum Mes {
                                : (ordinal >= 6 && ordinal <= 8);
     }
 }
-````
+```
