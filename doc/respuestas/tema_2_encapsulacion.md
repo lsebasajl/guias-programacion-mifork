@@ -17,7 +17,7 @@ Por favor, escribe en impersonal las respuestas.
 ## 1. En Programación Orientada a Objetos (POO), ¿Qué buscan la **encapsulación** y **la ocultación** de información? Enumera brevemente algunas ventajas de la ocultación de información.
 
 ### Respuesta
-La **encapsulación** en Programación Orientada a Objetos busca agrupar en una misma unidad (la clase) los datos que representan el estado de un objeto y las operaciones que pueden actuar sobre dichos datos. Junto con ello, la **ocultación de información** pretende restringir el acceso directo a los detalles internos de implementación, permitiendo que el uso del objeto se realice únicamente a través de una interfaz bien definida.
+La **encapsulación** en Programación Orientada a Objetos busca agrupar en una misma unidad (`la clase`) los datos que representan el estado de un objeto y las operaciones que pueden actuar sobre dichos datos (`estado y comportamiento`). Ademas de evitar estados no validos de los objetos. Junto con ello, la **ocultación de información** pretende restringir el acceso directo a los detalles internos de implementación, permitiendo que el uso del objeto se realice únicamente a través de una interfaz bien definida.
 
 El objetivo principal es separar el *qué hace* un objeto del *cómo lo hace*. De esta forma, se evita que otras partes del programa dependan de detalles internos que podrían cambiar con el tiempo. Esta idea resulta especialmente importante para alguien con experiencia en C/C++, donde el acceso a estructuras de datos suele ser directo y menos controlado.
 
@@ -27,7 +27,7 @@ Entre las ventajas de la ocultación de información se encuentran: una mayor fa
 ## 2. ¿Qué se entiende por la **interfaz pública** de un objeto o clase en POO? Describe brevemente cómo se relaciona con la ocultación de información.
 
 ### Respuesta
-La **interfaz pública** de una clase está formada por el conjunto de métodos y atributos accesibles desde fuera de la propia clase. Es la “cara visible” del objeto, es decir, aquello que otras clases pueden utilizar para interactuar con él sin conocer su implementación interna.
+La **interfaz pública** de una clase está formada por el conjunto de métodos y atributos (`miembros`) accesibles desde fuera de la propia clase (todo aquello que no sea `private`). Es la “cara visible” del objeto, es decir, aquello que otras clases pueden utilizar para interactuar con él sin conocer su implementación interna.
 
 La relación con la ocultación de información es directa: solo los elementos declarados como públicos forman parte de la interfaz pública, mientras que el resto se mantiene oculto. De esta manera, se controla qué operaciones están permitidas y cómo se puede interactuar con el estado del objeto.
 
@@ -39,7 +39,7 @@ Gracias a esta separación, el programador puede modificar la representación in
 ### Respuesta
 La **interfaz pública** de una clase actúa como un contrato con el resto del programa. Una vez que otras clases comienzan a depender de ella, cualquier cambio puede provocar errores en cascada. Por ello, debe diseñarse con cuidado, pensando en su uso presente y futuro.
 
-Cambiar la interfaz pública no suele ser sencillo, especialmente en proyectos grandes o cuando la clase es utilizada en muchos puntos del código. Eliminar métodos, cambiar firmas o modificar comportamientos visibles puede obligar a revisar y adaptar numerosas partes del sistema.
+Cambiar la interfaz pública no suele ser sencillo, especialmente en proyectos grandes o cuando la clase es utilizada en muchos puntos del código. Eliminar métodos, cambiar firmas o modificar comportamientos visibles puede obligar a revisar y adaptar numerosas partes del sistema. Es decir, conlleva mas cambios que en la parte oculta.
 
 Por este motivo, una buena práctica consiste en exponer únicamente lo necesario, manteniendo la interfaz lo más simple y estable posible, y ocultando todo aquello que no deba ser usado directamente.
 
@@ -51,8 +51,13 @@ Las **invariantes de clase** son condiciones que deben cumplirse siempre para qu
 
 La ocultación de información ayuda a mantener estas invariantes porque impide que el estado interno sea modificado libremente desde fuera de la clase. Al forzar el acceso a los datos a través de métodos controlados, se puede comprobar y garantizar que cualquier cambio respeta las condiciones establecidas.
 
-De este modo, la clase se protege a sí misma frente a usos incorrectos y se asegura que todos sus objetos permanezcan en un estado coherente a lo largo de su vida.
+De este modo, la clase se protege a sí misma frente a usos incorrectos y se asegura que todos sus objetos permanezcan en un estado coherente a lo largo de toda su vida.
 
+**Ejemplos:**
+- `CuentaBancaria` debe tener saldo positivo.
+- `Persona` debe tener `edad >= 0`
+- `Rectangulo` debe tener `ancho` y `alto > 0`
+ 
 
 ## 5. Pon un ejemplo de una clase `Punto` en `Java`, con dos coordenadas, `x` e `y`, de tipo `double`, con un método `calcularDistanciaAOrigen`, y que haga uso de la ocultación de información. ¿Cuál es la interfaz pública de la clase `Punto`? ¿Qué significa `public` y `private`?
 
@@ -80,7 +85,7 @@ La interfaz pública de la clase `Punto` está formada por su constructor y por 
 ## 6. En Java, ¿A quiénes se pueden aplicar los modificadores `public` o `private`?
 
 ### Respuesta
-En Java, los modificadores de visibilidad como `public` y `private` pueden aplicarse a clases, atributos, métodos y constructores. Sin embargo, existen ciertas restricciones, como el hecho de que una clase de nivel superior no puede ser `private`.
+En Java, los modificadores de visibilidad como `public` y `private` pueden aplicarse a clases, atributos, métodos y constructores. Sin embargo, existen ciertas restricciones, como el hecho de que una clase de nivel superior no puede ser `private`, pero si puede ser `private` en clases internas.
 
 Cuando se aplican a atributos, métodos o constructores, controlan desde dónde pueden ser utilizados. `public` permite el acceso desde cualquier parte del programa, mientras que `private` limita el acceso a la propia clase.
 
@@ -90,9 +95,9 @@ Este control fino de la visibilidad es una de las herramientas principales que o
 ## 7. En POO, la visibilidad puede ser pública o privada, pero ¿existen más tipos de visibilidad? ¿Qué ocurre en Java? ¿Y en otros lenguajes?
 
 ### Respuesta
-Además de la visibilidad pública y privada, muchos lenguajes orientados a objetos incluyen niveles intermedios de visibilidad. En Java, existen cuatro niveles: `public`, `protected`, visibilidad por defecto (paquete) y `private`.
+Además de la visibilidad pública y privada, muchos lenguajes orientados a objetos incluyen niveles intermedios de visibilidad. En Java, existen cuatro niveles: `public`, `protected`, visibilidad por defecto (`package-private`) y `private`.
 
-El modificador `protected` permite el acceso desde clases del mismo paquete o desde subclases, mientras que la visibilidad por defecto restringe el acceso al mismo paquete. Esto ofrece mayor flexibilidad a la hora de diseñar jerarquías de clases y módulos.
+El modificador `protected` permite el acceso desde clases del mismo paquete o desde subclases, mientras que `package-private` restringe el acceso al mismo paquete. Esto ofrece mayor flexibilidad a la hora de diseñar jerarquías de clases y módulos.
 
 En otros lenguajes, como C++, también existen niveles como `protected`, aunque las reglas exactas pueden variar. En todos los casos, el objetivo es proporcionar mecanismos para controlar el acceso y reforzar la encapsulación.
 
@@ -158,7 +163,7 @@ Por tanto, la ocultación de información mejora la robustez y fiabilidad del so
 ## 11. ¿Qué diferencia hay entre **miembro de instancia** y **miembro de clase**? ¿Los miembros de clase también se pueden ocultar?
 
 ### Respuesta
-Un **miembro de instancia** pertenece a cada objeto concreto creado a partir de una clase, mientras que un **miembro de clase** pertenece a la clase en sí y es compartido por todas sus instancias. En Java, los miembros de clase se declaran con la palabra clave `static`.
+Un **miembro de instancia** pertenece a cada objeto concreto creado a partir de una clase (instancia), mientras que un **miembro de clase** pertenece a la clase en sí y es compartido por todas sus instancias (no está asociado a ninguna instancia). En Java, los miembros de clase se declaran con la palabra clave `static` y no hace falta usar `this` para usarlos, algo que si ocurre con los atributos.
 
 Los miembros de instancia almacenan información específica de cada objeto, como las coordenadas de un punto. Los miembros de clase suelen usarse para información común, contadores o constantes.
 
@@ -193,7 +198,7 @@ public class Contador {
 ### Respuesta
 Sí, en determinados casos tiene sentido que los constructores sean privados. Esto impide que se creen instancias de la clase directamente desde fuera.
 
-Este enfoque se utiliza, por ejemplo, en patrones de diseño como el `Singleton` o en clases que solo ofrecen métodos estáticos. También es común cuando se quiere controlar estrictamente cómo se crean los objetos mediante métodos factoría.
+Este enfoque se utiliza, por ejemplo, en patrones de diseño como el `Singleton` o en clases que solo ofrecen métodos estáticos. También es común cuando se quiere controlar estrictamente cómo se crean los objetos mediante métodos factoría, cuando se quiere tener un constructor auxiliar oculto (llamado desde otros constructores públicos) y cuando se quiere controlar el número de instancias.
 
 Por tanto, un constructor privado es una herramienta más para reforzar la encapsulación y el control sobre la creación de objetos.
 
@@ -265,13 +270,21 @@ public class Punto {
         coordenadas[1] = y;
     }
 
+    public double getX() {
+        return this.coordenadas[0];
+    }
+
+    public double getY() {
+        return this.coordenadas[1];
+    }
+
     public double calcularDistanciaAOrigen() {
-        return Math.sqrt(coordenadas[0] * coordenadas[0] +
-                         coordenadas[1] * coordenadas[1]);
+        return Math.sqrt(this.getX() * this.getX() +
+                         this.getY() * this.getY());
     }
 }
 ```
-La interfaz pública no se ha modificado, ya que el constructor y el método siguen siendo los mismos. El cambio afecta únicamente a la implementación interna.
+La interfaz pública no se ha modificado, ya que el constructor, los getters y el método siguen siendo los mismos. El cambio afecta únicamente a la implementación interna.
 
 Este ejemplo ilustra una de las grandes ventajas de la encapsulación: se puede cambiar la representación interna sin afectar al código que usa la clase.
 
