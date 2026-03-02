@@ -322,7 +322,7 @@ Un diseño cuidadoso suele preferir objetos con menos mutabilidad y con interfac
 ## 19. ¿La clase `String` en Java es mutable o inmutable? ¿Qué ocurre al concatenar dos cadenas? ¿Qué debemos hacer si vamos a hacer una operación que implique concatenar muchas veces para construir paso a paso una cadena muy larga?
 
 ### Respuesta
-La clase `String` en Java es **inmutable**. Esto significa que una vez creada una cadena, su contenido no puede cambiar.
+La clase `String` en Java es **inmutable** (no tiene metodos que permiten cambiar el valor del string). Esto significa que una vez creada una cadena, su contenido no puede cambiar.
 
 Al concatenar dos cadenas, no se modifica ninguna de las originales, sino que se crea un nuevo objeto `String`. Esto puede resultar ineficiente si se realizan muchas concatenaciones.
 
@@ -333,7 +333,7 @@ En esos casos, es recomendable utilizar clases como `StringBuilder` o `StringBuf
 ### Respuesta
 En POO, los objetos pueden compararse por **identidad** (si son el mismo objeto en memoria) o por **contenido** (si representan el mismo valor lógico). En Java, el operador `==` compara la identidad.
 
-El método `equals` se utiliza para comparar el contenido lógico de los objetos. Por defecto, la implementación de `equals` en `Object` compara identidad, pero suele sobrescribirse.
+El método `equals` se utiliza para comparar el contenido lógico de los objetos. Por defecto, la implementación de `equals` en `Object` **compara identidad** (excepto en clases concretas donde hace una comparación por contenido, como por ejemplo la clase `String`), pero suele sobrescribirse.
 
 Las cadenas en Java deben compararse siempre usando `equals`, ya que `==` solo comprueba si ambas referencias apuntan al mismo objeto.
 
@@ -375,9 +375,9 @@ public class Main {
 ### Respuesta
 Las clases *wrapper* son clases que envuelven tipos primitivos para tratarlos como objetos. En Java, ejemplos de wrappers son `Integer`, `Double` o `Boolean`.
 
-Java permite un proceso automático llamado *autoboxing* y *unboxing*, que convierte entre tipos primitivos y sus wrappers de forma transparente.
+Java permite un proceso automático llamado *autoboxing* (`Integer i = 7 ==> Integer i new Integer(7)`) y *unboxing* (`int j = i ==> int j = i.intValue()`), que convierte entre tipos primitivos y sus wrappers de forma transparente.
 
-Estas clases permiten usar valores primitivos en colecciones y aprovechar características de los objetos. No todos los lenguajes tienen tipos primitivos separados; algunos tratan todo como objetos y no necesitan wrappers.
+Estas clases permiten usar valores primitivos en colecciones y aprovechar características de los objetos, tambien permiten añadirle comportamiento. No todos los lenguajes tienen tipos primitivos separados; algunos tratan todo como objetos y no necesitan wrappers.
 
 **Ejemplo**
 ```java
@@ -432,6 +432,7 @@ public enum Mes {
     private int ordinal;
     private int dias;
 
+    //El constructor debe ser privado
     private Mes(int ordinal, int dias) {
         this.ordinal = ordinal;
         this.dias = dias;
