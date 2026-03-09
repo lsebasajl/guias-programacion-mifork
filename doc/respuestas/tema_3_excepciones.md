@@ -200,7 +200,7 @@ Con esta técnica, se puede lanzar y capturar `NumeroNegativoException` en lugar
 ### Respuesta
 En Java, las excepciones como objetos encapsulan información que no estaba disponible en el diseño de C con códigos de error. Esto permite que el manejador de errores obtenga datos completos sobre lo que ocurrió sin que el método que lanza la excepción tenga que exponer sus detalles internos. Por ejemplo, cada objeto excepción contiene un **mensaje descriptivo**, accesible mediante `getMessage()`, que explica la causa del error. Esto es equivalente a la notificación de error en C, pero mucho más estructurado y seguro, porque no depende de valores mágicos ni de convenciones externas.
 
-Otra información útil que encapsula una excepción es la **traza de la pila** (stack trace), que se puede obtener con `printStackTrace()`. Esta traza muestra la secuencia exacta de métodos que se llamaron antes de que ocurriera la excepción, incluyendo el método que la lanzó y todos los métodos intermedios. En C, esta información no existe de forma automática; habría que implementarla manualmente, lo que es más propenso a errores y difícil de mantener. Con Java, el manejador puede utilizarla para depuración, registro o diagnóstico sin interferir con la lógica del programa principal.
+Otra información útil que encapsula una excepción es la **traza de la pila** (stack trace), que se puede obtener con `printStackTrace()`. Esta traza muestra la secuencia exacta de métodos que se llamaron antes de que ocurriera la excepción, incluyendo el método que la lanzó y todos los métodos intermedios (sirve para depurar). En C, esta información no existe de forma automática; habría que implementarla manualmente, lo que es más propenso a errores y difícil de mantener. Con Java, el manejador puede utilizarla para depuración, registro o diagnóstico sin interferir con la lógica del programa principal.
 
 Además, cualquier excepción puede encapsular un **objeto causa** (`getCause()`), que permite enlazar excepciones cuando una falla depende de otra. Esto es especialmente útil en aplicaciones complejas donde un error de bajo nivel provoca uno de alto nivel, y el manejador puede acceder a ambos contextos para decidir cómo reaccionar. En resumen, la encapsulación de información en objetos excepción aporta claridad, seguridad y un acceso estructurado a los datos del error, facilitando un manejo más preciso que los códigos de error simples de C.
 
@@ -370,7 +370,7 @@ En este ejemplo, se ve que el mensaje del `finally` se imprime antes de que el v
 ## 11. En Java, qué son las excepciones **"controladas"** y las **"no controladas"**? ¿Qué papel juega `RuntimeException`? Pon un ejemplo de excepciones típicas controladas y no controladas que incluso nosotros mismos podríamos usar. Haz dos listas con 3 o 4 ejemplos de situación donde se suele preferir una excepción controlada y donde se suele preferir una excepción no controlada.
 
 ### Respuesta
-En Java, las excepciones se clasifican en **controladas (checked)** y **no controladas (unchecked)** según el momento en que el compilador exige su manejo. Las **excepciones controladas** son aquellas que el compilador obliga a capturar o declarar con `throws` en la firma del método. Generalmente representan situaciones que pueden ocurrir de manera previsible y recuperable, como errores de E/S o problemas con ficheros. Por el contrario, las **excepciones no controladas** heredan de `RuntimeException` y representan errores de programación que normalmente no se esperan ni se pueden manejar de manera rutinaria, como errores de índice, punteros nulos o violaciones de lógica.
+En Java, las excepciones se clasifican en **controladas (checked)** y **no controladas (unchecked)** según el momento en que el compilador exige su manejo. Las **excepciones controladas** (todas menos las `RunTimeException`) son aquellas que el compilador **obliga a capturar o declarar con `throws` en la firma del método**. Generalmente representan situaciones que pueden ocurrir de manera previsible y recuperable, como errores de E/S o problemas con ficheros. Por el contrario, las **excepciones no controladas** heredan de `RuntimeException` y representan errores de programación que normalmente no se esperan ni se pueden manejar de manera rutinaria, como errores de índice, punteros nulos o violaciones de lógica.
 
 El papel de `RuntimeException` es servir como base de todas las excepciones no controladas. Esto incluye, por ejemplo, `NullPointerException` o `IndexOutOfBoundsException`. El compilador no obliga a capturarlas ni a declararlas, lo que permite escribir código más limpio, asumiendo que estas situaciones reflejan errores que deberían corregirse durante el desarrollo y no gestionarse rutinariamente en producción.
 
@@ -552,6 +552,7 @@ public static void ejemploTransformacion() throws Exception {
 ```
 
 En este caso, el `catch` captura un `ArithmeticException` pero lanza una nueva excepción con un mensaje más descriptivo, pasando la original como causa (`e`).
+En este caso, será la causa.
 
 **Ejemplo 2: Relanzar la misma excepción capturada**
 
@@ -567,6 +568,19 @@ public static void ejemploRethrow() throws ArithmeticException {
 ```
 
 Aquí, el bloque `catch` realiza un registro y luego relanza la **misma excepción** para que el llamador pueda decidir cómo manejarla. Esto tiene sentido cuando se necesita **combinar logging o limpieza parcial** con propagación, sin ocultar el error original.
+
+**Ejemplo 3: Lanzar otra excepcion totalmente nueva**
+
+```java
+public static void ejemploTransformacion() throws Exception {
+    try {
+        int resultado = 10 / 0;
+    } catch (ArithmeticException e) {
+        // Lanzar una excepcion totalmente nueva
+        throw new AplicationException("Error");
+    }
+}
+```
 
 En resumen, lanzar una excepción dentro del `catch` permite **modificar, encapsular o relanzar** la situación de error, mientras que relanzar la misma excepción es útil para **mantener la trazabilidad y dejar que un nivel superior gestione el error**.
 
@@ -609,6 +623,6 @@ public class EjemploCausa {
 }
 ```
 
-Cuando se imprime la excepción con `printStackTrace()`, **se muestra la causa**. La salida incluye primero la excepción de alto nivel (`ErrorLecturaArchivoException`) y, debajo, la excepción original (`IOException`) con su propia traza. Esto permite ver toda la cadena de errores desde el nivel superior hasta el error inicial, facilitando la depuración y comprensión de la secuencia exacta de fallos que provocaron la excepción final.
+Cuando se imprime la excepción con `printStackTrace()`, **se muestra la causa**. La salida incluye primero la excepción de alto nivel (`ErrorLecturaArchivoException`) y, debajo, la excepción original (`IOException`) con su propia traza. Esto permite ver toda la cadena de errores desde el nivel superior hasta el error inicial, facilitando la depuración y comprensión de la secuencia exacta de fallos que provocaron la excepción final. Se puede ver rapidamente con el metodo `getCause()`
 
 En resumen, la relación de causa permite **encapsular errores de bajo nivel** en excepciones de alto nivel, manteniendo toda la información sobre el origen del problema y ofreciendo mayor claridad al manejar errores complejos.
