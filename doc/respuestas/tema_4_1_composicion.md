@@ -119,6 +119,8 @@ Por otro lado, la **composición débil** ocurre cuando un objeto utiliza o cont
 
 La diferencia principal, por tanto, está en el **ciclo de vida de los objetos**. En la composición fuerte existe una dependencia total entre el contenedor y sus partes, mientras que en la composición débil los objetos relacionados mantienen una existencia independiente y simplemente están vinculados entre sí.
 
+En cuanto a las clases `Punto` y `Linea`, los objetos `Punto` pueden vivir sin estar en objetos `Linea`, es decir, **composición debil**
+
 Un ejemplo sencillo de **composición fuerte** puede encontrarse en una clase `Casa` que contiene varias `Habitacion`. En este caso, las habitaciones forman parte de la casa y normalmente **no tienen sentido como entidades independientes dentro del modelo del programa**. Si la casa deja de existir, también desaparecen sus habitaciones. Por tanto, el ciclo de vida de las habitaciones depende completamente del de la casa, lo que representa una **composición propiamente dicha**.
 
 ```java
@@ -482,7 +484,12 @@ Para solucionarlo, se puede devolver **una copia de la lista** o una **vista no 
 import java.util.Collections;
 
 public List<Profesor> getProfesores() {
-    return Collections.unmodifiableList(new ArrayList<>(profesores));
+
+    //Copia - Solucion clásica con penalización pequeña en el rendimiento
+    return new ArrayList<>(this.profesores);
+
+    //Vista no modificable
+    return Collections.unmodifiableList(this.profesores);
 }
 ```
 
