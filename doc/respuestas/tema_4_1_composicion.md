@@ -621,6 +621,6 @@ class Departamento {
 }
 ```
 
-De esta manera, cada profesor **sabe a qué departamento pertenece**, y el departamento **mantiene la lista de profesores**, logrando así una relación **bidireccional consistente**.
+De esta manera, cada profesor **sabe a qué departamento pertenece**, y el departamento **mantiene la lista de profesores**, logrando así una relación **bidireccional consistente** (esto implica una programacion consistente para mantener la integridad de ambas clases, sobre todo en la clase `Profesor`, y en general de la aplicación).
 
-Un aspecto importante de este diseño es **controlar la visibilidad** del método `setDepartamento` para que los cambios solo se realicen desde el departamento, evitando inconsistencias desde código externo.
+Un aspecto importante de este diseño es **controlar la visibilidad** del método `setDepartamento` para que los cambios solo se realicen desde el departamento, evitando inconsistencias desde código externo. Por ejemplo, usando la visibilidad `package-private` (no poner `private`, `public` o `protected`) en donde solo las clases que esten en ese mismo paquete, van a poder llamar a metodos de otras clases, asi no usamos otras visibilidades como `private` y `protected`.
