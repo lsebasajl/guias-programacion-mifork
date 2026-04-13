@@ -17,7 +17,7 @@ Por favor, escribe en impersonal las respuestas.
 ### Respuesta
 En orientación a objetos, la **herencia** es un mecanismo mediante el cual una clase (subclase) adquiere las propiedades y comportamientos de otra (superclase). Esto se expresa con la relación **“A es-un B”**: por ejemplo, un *Artillero es-un Soldado* y un *Zapador es-un Soldado*. Esta relación implica que los objetos de las subclases pueden tratarse como objetos de la superclase, respetando su contrato general. No se trata solo de reutilizar código, sino de modelar correctamente jerarquías conceptuales.
 
-La primera implicación es la **compatibilidad de tipos**: cualquier instancia de una subclase puede usarse donde se espera una instancia de la superclase. Esto permite, por ejemplo, almacenar objetos de distintos tipos concretos en una misma estructura común (como un array de `Soldado`) y tratarlos de forma uniforme. La segunda implicación es la **herencia de estado y comportamiento**: la subclase hereda los atributos y métodos accesibles de la superclase, pudiendo utilizarlos o ampliarlos. Así, tanto el Artillero como el Zapador comparten el atributo `nombre` y el método `saludar()`.
+La primera implicación es la **compatibilidad de tipos**: cualquier instancia de una subclase puede usarse donde se espera una instancia de la superclase. Esto permite, por ejemplo, almacenar objetos de distintos tipos concretos en una misma estructura común (como un array de `Soldado`) y tratarlos de forma uniforme. La segunda implicación es la **herencia de estado y comportamiento**: la subclase hereda los atributos y métodos accesibles de la superclase, pudiendo **utilizarlos o ampliarlos**. Así, tanto el Artillero como el Zapador comparten el atributo `nombre` y el método `saludar()`.
 
 A continuación se muestra un ejemplo sencillo en Java que ilustra ambas ideas. Se define una clase base `Soldado` con un atributo privado `nombre` y un método `saludar()`. Luego se crean dos subclases, cada una con su propio estado adicional y métodos específicos:
 
@@ -252,14 +252,20 @@ No es posible invocar directamente métodos específicos del subtipo (por ejempl
 
 El operador `instanceof` permite comprobar en tiempo de ejecución si un objeto es instancia de una clase concreta (o de alguna de sus subclases). Esto es útil para realizar downcasting de forma segura, evitando errores en ejecución. Sin esta comprobación, un casting incorrecto produciría una excepción (`ClassCastException`).
 
-A continuación se muestra un ejemplo recorriendo un array de `Soldado`. Si el objeto real es un `Artillero`, se hace un casting y se accede a su información específica:
+A continuación se muestra un ejemplo recorriendo un array de `Soldado`. Si el objeto real es un `Artillero`, se hace un casting (**downcansting explícito**) y se accede a su información específica:
 
 ```java
 for (Soldado s : ejercito) {
     s.saludar();
 
+    // Version vieja
     if (s instanceof Artillero) {
         Artillero a = (Artillero) s; // downcasting
+        System.out.println("Tiene " + a.getNumeroCohetes() + " cohetes");
+    }
+
+    // Version nueva
+    if (s instanceof Artillero a) {
         System.out.println("Tiene " + a.getNumeroCohetes() + " cohetes");
     }
 }
