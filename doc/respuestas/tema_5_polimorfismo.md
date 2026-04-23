@@ -266,6 +266,8 @@ En Java sí existe la herencia múltiple de interfaces, es decir, una interfaz p
 
 En el ejemplo, se define una interfaz `Fichero` con un método para leer el contenido, y otra interfaz `FicheroEscribible` que extiende `Fichero` y añade operaciones adicionales como escribir y eliminar contenido. Esto muestra cómo una interfaz puede especializar otra ampliando su contrato.
 
+Una interfaz puede extender varias interfacez, no solo una, por ejemplo: `public interface I2 extends I1, I2, ... { m2(); }`
+
 ```java
 interface Fichero {
     String leer();
