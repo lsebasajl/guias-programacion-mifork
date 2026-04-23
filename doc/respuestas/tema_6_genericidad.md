@@ -360,6 +360,24 @@ class Util {
 }
 ```
 
+O si se quiere que sean de distinto tipo:
+```java
+import java.util.Random;
+
+class Util {
+
+    public static <T,U> Object seleccionaUno(T a, U b) {
+        Random r = new Random();
+        return r.nextBoolean() ? a : b;
+    }
+
+    public static void main(String[] args) {
+        Object s = seleccionaUno("Hola", 5);
+        System.out.println(s);
+    }
+}
+```
+
 Con este enfoque, (i) se evita completamente el *downcasting*, ya que el compilador conoce el tipo de retorno, y (ii) se obliga a que ambos argumentos sean del mismo tipo (`T`). Esto mejora la seguridad y claridad del código, aprovechando plenamente las ventajas de la programación genérica frente al uso de `Object`.
 
 
@@ -460,6 +478,33 @@ Integer x = p1.getX();
 ```
 
 Por tanto, la diferencia clave es que en la versión sin genéricos el retorno es siempre `Number` (menos específico y con necesidad potencial de conversiones), mientras que en la versión con genéricos el retorno es el tipo concreto `T`, lo que elimina *casting* y refuerza el control de tipos en compilación.
+
+Con 2 tipos seria
+```java
+class Punto<T extends Number, X extends Number > {
+    private T x;
+    private X y;
+
+    public Punto(T x, X y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public T getX() {
+        return x;
+    }
+
+    public X getY() {
+        return y;
+    }
+
+    public double calcularDistanciaA(Punto<T,X> otro) {
+        double dx = this.x.doubleValue() - otro.x.doubleValue();
+        double dy = this.y.doubleValue() - otro.y.doubleValue();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+```
 
 
 ## 11. Hagamos un ejemplo avanzado. El siguiente código, con interfaz `Punto`, que define un método `calcularDistanciaA(Punto p)`, junto con las implementaciones `Punto2D` y `Punto3D`. Añade generics para asegurarnos que la sobreescritura del método calcular distancia a otro `Punto` siempre es sobre un `Punto` del mismo tipo, evitando `instanceof` y el downcasting.
