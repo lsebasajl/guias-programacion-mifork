@@ -123,6 +123,9 @@ public class Ejemplo {
         // Se pasa la función como argumento
         String resultado = procesar("Hola mundo", aMayusculas);
 
+        // O tambien se puede pasar de forma literal
+        String resultado = procesar("Hola mundo", s -> s.toUpperCase());
+
         System.out.println(resultado);
     }
 }
@@ -397,6 +400,7 @@ La más general es `Function<T, R>`, que representa una transformación de un ti
 Las principales interfaces funcionales predefinidas en Java son:
 
 * **`Function<T, R>`**: transforma un valor de tipo `T` en otro de tipo `R`.
+* **`BiFunction<T1, T2, R>`**: transforma el valor de los tipos `T1, T2` en otro de tipo `R`.
 * **`Consumer<T>`**: recibe un valor de tipo `T` y no devuelve nada (efecto secundario).
 * **`Supplier<T>`**: no recibe parámetros y devuelve un valor de tipo `T`.
 * **`Predicate<T>`**: recibe un valor de tipo `T` y devuelve un `boolean` (condición lógica).
