@@ -402,6 +402,7 @@ Las principales interfaces funcionales predefinidas en Java son:
 * **`Function<T, R>`**: transforma un valor de tipo `T` en otro de tipo `R`.
 * **`BiFunction<T1, T2, R>`**: transforma el valor de los tipos `T1, T2` en otro de tipo `R`.
 * **`Consumer<T>`**: recibe un valor de tipo `T` y no devuelve nada (efecto secundario).
+* **`BiConsumer<T1, T2>`**: recibe dos valores de tipo `T1` y `T2` y no devuelve nada (efecto secundario).
 * **`Supplier<T>`**: no recibe parámetros y devuelve un valor de tipo `T`.
 * **`Predicate<T>`**: recibe un valor de tipo `T` y devuelve un `boolean` (condición lógica).
 
@@ -669,6 +670,9 @@ public class Ejemplo {
     public static void main(String[] args) {
 
         Supplier<Persona> ref = Persona::new;
+        
+        //Otra forma, en caso de que el contructor reciba un parametro
+        Function <String, Persona> ref = Persona::new;
 
         Persona p = ref.get();
     }
@@ -820,6 +824,11 @@ public class Ejemplo {
         Comparator<Persona> comp = Comparator
                 .comparingInt((Persona p) -> p.edad)
                 .thenComparing(p -> p.nombre);
+
+        //Otra forma con referencia a metodo
+        Comparator<Persona> comp = Comparator
+                .comparingInt(Persona::getEdad)
+                .thenComparing(Persona::getNombre);
 
         Collections.sort(lista, comp);
 
